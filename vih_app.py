@@ -1,14 +1,8 @@
 from PIL import Image
-import os
-import streamlit as st
-
-# Carga de imagen desde la raíz del repositorio
-image = Image.open("logo crb.jpg")
-st.image(image, use_column_width=False, width=100)
-
 import streamlit as st
 from fpdf import FPDF
 import datetime
+import os
 
 # Configuración de la página
 st.set_page_config(
@@ -17,8 +11,14 @@ st.set_page_config(
     layout="centered"
 )
 
-# Logo e introducción
-st.image("https://imgur.com/a/oeYkCVb", width=100)
+# Carga y muestra de logo desde archivo
+try:
+    image = Image.open("logo_crb.jpg")
+    st.image(image, use_container_width=False, width=200)
+except:
+    st.warning("No se pudo cargar el logo.")
+
+# Título
 st.markdown("<h1 style='text-align: center; color: #4CAF50;'>Informe VIH - Clínica Río Blanco</h1>", unsafe_allow_html=True)
 st.markdown("---")
 
@@ -54,8 +54,9 @@ def interpretar_vih(valor):
     except:
         return None, "Valor inválido"
 
-# PDF
+# Generación de PDF
 def generar_pdf():
+    interpretacion, recomendacion = interpretar_vih(resultado_bruto)
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", "B", 14)
@@ -80,7 +81,7 @@ def generar_pdf():
     pdf.output(filename)
     return filename
 
-# Botón generar informe
+# Botón para generar PDF
 if st.button("📄 Generar Informe PDF"):
     if not (nombre and rut and resultado_bruto and laboratorio and validador):
         st.error("Por favor completa todos los campos obligatorios.")
@@ -88,6 +89,17 @@ if st.button("📄 Generar Informe PDF"):
         interpretacion, recomendacion = interpretar_vih(resultado_bruto)
         if interpretacion is None:
             st.error("El valor ingresado no es válido.")
+        else:
+            file = generar_pdf()
+            with open(file, "rb") as f:
+                st.success("Informe generado con éxito.")
+                st.download_button(
+                    label="📥 Descargar PDF",
+                    data=f,
+                    file_name=file,
+                    mime="application/pdf"
+                )
+
         else:
             archivo = generar_pdf()
             with open(archivo, "rb") as f:

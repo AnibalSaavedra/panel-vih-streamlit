@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 # Logo e introducción
-st.image("https://i.imgur.com/vCvNe0G.png", width=100)
+st.image("https://imgur.com/a/oeYkCVb", width=100)
 st.markdown("<h1 style='text-align: center; color: #4CAF50;'>Informe VIH - Clínica Río Blanco</h1>", unsafe_allow_html=True)
 st.markdown("---")
 

@@ -100,7 +100,3 @@ if st.button("📄 Generar Informe PDF"):
                     mime="application/pdf"
                 )
 
-        else:
-            archivo = generar_pdf()
-            with open(archivo, "rb") as f:
-                st.download_button("⬇️ Descargar Informe PDF", f, file_name=archivo, mime="application/pdf")

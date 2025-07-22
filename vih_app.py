@@ -3,7 +3,7 @@ import os
 import streamlit as st
 
 # Carga de imagen desde la raíz del repositorio
-image = Image.open(os.path.join("logo.png"))
+image = Image.open("logo crb.jpg")
 st.image(image, use_column_width=False, width=290)
 
 import streamlit as st
